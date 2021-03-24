@@ -7,6 +7,7 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// création d'un nouvel exercice
 router.route('/add').post((req, res) => {
   const username = req.body.username;
   const description = req.body.description;
@@ -20,6 +21,7 @@ router.route('/add').post((req, res) => {
     date,
   });
 
+  // sauvegarde du nouveal exo
   newExercise.save()
   .then(() => res.json('Exercise added!'))
   .catch(err => res.status(400).json('Error: ' + err));

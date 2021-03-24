@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 export default class CreateUser extends Component {
 	constructor(props) {
 		super(props);
 
-		// le code ci dessous permet de bind "this" pour chaque élément (username, description...)
 		this.onChangeUsername = this.onChangeUsername.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 
@@ -13,17 +13,55 @@ export default class CreateUser extends Component {
 		};
 	}
 
-	// onChange, username récupère la valeur et setState permet de mettre à jour l'état
 	onChangeUsername(e) {
 		this.setState({
 			username: e.target.value,
 		});
 	}
 
+	onSubmit(e) {
+		e.preventDefault();
+
+		const user = {
+			username: this.state.username,
+		};
+
+		console.log(user);
+
+		// Axios connexion du backend et du front end pour envoyer des datas et faire des request(npm install axios)
+		axios
+			.post("http://localhost:5000/users/add", user)
+			.then((res) => console.log(res.data));
+
+		this.setState({
+			username: "",
+		});
+	}
+
 	render() {
 		return (
 			<div>
-				<p>Vous êtes sur la catégorie création utilisateur ! </p>
+				{/* Formulaire 1 champ */}
+				<h3>Créer nouvel utilisateur</h3>
+				<form onSubmit={this.onSubmit}>
+					<div className="form-group">
+						<label>Utilisateur: </label>
+						<input
+							type="text"
+							required
+							className="form-control"
+							value={this.state.username}
+							onChange={this.onChangeUsername}
+						/>
+					</div>
+					<div className="form-group">
+						<input
+							type="submit"
+							value="Create User"
+							className="btn btn-primary"
+						/>
+					</div>
+				</form>
 			</div>
 		);
 	}
